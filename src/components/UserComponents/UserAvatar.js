@@ -12,9 +12,6 @@ class UserAvatar extends Component{
         }
     }
 
-
-
-    
     render(){
         return(
             <Card>
