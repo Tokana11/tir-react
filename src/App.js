@@ -12,6 +12,8 @@ import {
   Route,
 } from "react-router-dom";
 
+import Atlas from './pages/Atlas';
+
 
 
 const Layout = props => (
@@ -35,6 +37,14 @@ const routes = [
     exact: true,
     main: () => <Layout>
       <Profile />
+    </Layout>
+  },
+
+  {
+    path: '/atlas',
+    exact: true,
+    main: () => <Layout>
+      <Atlas/>
     </Layout>
   },
 

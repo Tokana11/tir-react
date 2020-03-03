@@ -30,8 +30,7 @@ class UserInfo extends Component {
             ...this.state,
             [event.target.name]: value
         })
-        console.log(event.target);
-    }
+      }
 
     checkPassMatch=(event)=>{
         if(this.state.password !== this.state.repPassword){

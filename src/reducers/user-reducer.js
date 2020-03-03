@@ -2,7 +2,6 @@ const initialState = {
    name:''
 };
 
-
 export default function(state = initialState,action){
     switch(action.type){
         case 'SET_NAME':
@@ -11,8 +10,7 @@ export default function(state = initialState,action){
                 name:action.payload
             }
         default:
-             return state
-             
+             return state 
     }
     
 }
