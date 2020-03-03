@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SingleCountryCard from "../components/atlasComponents/SingleCountryCard";
-import { InputGroup, InputGroupText, InputGroupAddon, Input, Spinner } from 'reactstrap';
+import { InputGroup, InputGroupText, InputGroupAddon, Input, Spinner, Button } from 'reactstrap';
 import axios from 'axios'
 import { Container } from "reactstrap";
 
@@ -9,7 +9,8 @@ class Atlas extends Component {
     state = {
         cards: [],
         query: '',
-        loading: true
+        loading: true,
+        view:'row'
     }
 
     componentDidMount() {
@@ -39,6 +40,7 @@ class Atlas extends Component {
             })
     }
 
+
     render() {
         return (
             <Container className='mt-3'>
@@ -56,6 +58,22 @@ class Atlas extends Component {
 
                     </InputGroup>
                 </Container>
+
+                <Container>
+                    <Button onClick={e=>this.setState({
+                                view:'col' 
+                            })}>
+                        <i className='fa fa-list'></i>
+                    </Button>
+
+                    <Button
+                    onClick={e=>this.setState({
+                        view:'row' 
+                    })}>
+                        <i className='fa fa-th-large'></i>
+                    </Button>
+
+                </Container>
                 {
                     this.state.loading && <Spinner 
                     style={{ 
@@ -64,7 +82,7 @@ class Atlas extends Component {
                     left: "50%",
                     width: '3rem', height: '3rem' }} />
                 }
-                <Container className='row'>
+                <Container className={this.state.view}>
                     {
                         this.state.cards
                             .filter(({ country_name }) => country_name.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
