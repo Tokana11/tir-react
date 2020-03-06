@@ -1,8 +1,9 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import SingleCountryCard from "../components/atlasComponents/SingleCountryCard";
-import {InputGroup, InputGroupText, InputGroupAddon, Input, Spinner, Button} from 'reactstrap';
+import { InputGroup, InputGroupText, InputGroupAddon, Input, Spinner, Button, Table } from 'reactstrap';
 import axios from 'axios'
-import {Container} from "reactstrap";
+import { Container } from "reactstrap";
+import CountryTableRow from "../components/atlasComponents/ContryTableRow";
 
 class Atlas extends Component {
 
@@ -10,7 +11,8 @@ class Atlas extends Component {
         cards: [],
         query: '',
         loading: true,
-        view: 'row'
+        cardView: 'row',
+        tableView: 'd-none',
     }
 
     componentDidMount() {
@@ -54,24 +56,25 @@ class Atlas extends Component {
                             value={this.state.query}
                             onChange={e => this.setState({
                                 query: e.target.value
-                            })}/>
+                            })} />
                     </InputGroup>
                 </Container>
 
                 <Container>
                     <Button onClick={e => this.setState({
-                        view: 'col'
+                        tableView: 'd-flex',
+                        cardView: 'd-none'
                     })}>
                         <i className='fa fa-list'></i>
-                    </Button>
+                    </Button> {' '}
 
                     <Button
                         onClick={e => this.setState({
-                            view: 'row'
+                            cardView: 'row',
+                            tableView: 'd-none'
                         })}>
                         <i className='fa fa-th-large'></i>
                     </Button>
-
                 </Container>
                 {
                     this.state.loading && <Spinner
@@ -80,16 +83,39 @@ class Atlas extends Component {
                             top: "50%",
                             left: "50%",
                             width: '3rem', height: '3rem'
-                        }}/>
+                        }} />
                 }
-                <Container className={this.state.view}>
+                <Container className={this.state.cardView}>
                     {
                         this.state.cards
-                            .filter(({country_name}) => country_name.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
-                            .map(data => <SingleCountryCard data={data}/>)
+                            .filter(({ country_name }) => country_name.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
+                            .map(data => <SingleCountryCard data={data} />)
                     }
 
                 </Container>
+
+                <Container className={this.state.tableView}>
+                    <Table>
+                        <thead>
+                            <tr>
+                                <th>Flag</th>
+                                <th>Contry</th>
+                                <th>Dail code</th>
+                                <th>Latitude</th>
+                                <th>Longitude</th>
+                            </tr>
+                        </thead>
+                        {
+                            this.state.cards
+                                .filter(({ country_name }) => country_name.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
+                                .map(data => <CountryTableRow data={data} />)
+                        }
+                    </Table>
+
+                </Container>
+
+
+
             </Container>
 
         );

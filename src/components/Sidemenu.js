@@ -77,8 +77,6 @@ class Sidemenu extends Component {
                             </NavText>
                         </NavItem>
                     </LinkContainer>
-
-
                 </SideNav.Nav>
             </SideNav>
 

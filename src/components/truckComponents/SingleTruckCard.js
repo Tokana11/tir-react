@@ -10,7 +10,7 @@ class SingleTruckCard extends Component {
             "method": "DELETE",
             "url": "http://localhost:8080/deleteTruck/" + id
         })
-            .finally((response) => {
+            .finally(() => {
                 this.props.delete(id);
             })
             

@@ -12,9 +12,11 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Label
+    Label,
+    Table
 } from 'reactstrap';
 import axios from 'axios'
+import TruckTableRow from "../components/truckComponents/TruckTableRow";
 
 class Truck extends Component {
 
@@ -22,7 +24,8 @@ class Truck extends Component {
         cards: [],
         query: '',
         loading: true,
-        view: 'row',
+        cardView: 'row',
+        tableView: 'd-none',
         modalIsOpen: false,
         regNumQuery: '',
         manufacturerQuery: '',
@@ -33,7 +36,6 @@ class Truck extends Component {
         axios({
             "method": "GET",
             "url": "http://localhost:8080/getAllTrucks",
-
         })
             .then((response) => {
                 this.setState({
@@ -47,7 +49,7 @@ class Truck extends Component {
                     loading: false
                 });
             })
-    }
+    };
 
     addTruck = () => {
         axios({
@@ -58,23 +60,24 @@ class Truck extends Component {
                 "truckRegNumber": this.state.regNumQuery,
                 "engineType": this.state.enginTypeQuery
             }
-
         })
             .finally((response) => {
+
                 this.setState({
-                        loading: false,
-                        cards: [...this.state.cards, response.data]
-                    })
+                    loading: false,
+                    cards: [...this.state.cards, response.data]
                 })
-                
+            })
+
             .catch((error) => {
                 this.setState({
                     loading: false,
                 });
-            })
-            this.toggleModal()
-            this.componentDidMount();
-    }
+            });
+        this.toggleModal();
+        this.componentDidMount();
+
+    };
 
     delete = (id) => {
         this.setState(prevState => ({
@@ -83,8 +86,7 @@ class Truck extends Component {
         }));
     };
 
-    toggleModal = () => this.setState(({ modalIsOpen }) => ({ modalIsOpen: !modalIsOpen }))
-
+    toggleModal = () => this.setState(({ modalIsOpen }) => ({ modalIsOpen: !modalIsOpen }));
 
 
     render() {
@@ -124,7 +126,8 @@ class Truck extends Component {
                         <ModalFooter>
                             <Button
                                 color="success"
-                                onClick={() => this.addTruck()}>Save</Button>{' '}
+                                onClick={() => this.addTruck()}>Save
+                            </Button>
                         </ModalFooter>
                     </Modal>
                 </div>
@@ -142,13 +145,27 @@ class Truck extends Component {
                                     query: e.target.value
                                 })} />
                         </InputGroup>
-                        
+
                     </Container>
 
                     <Container className='mb-3'>
                         <Button color='success' onClick={this.toggleModal} >
-                            + Add
-                    </Button>
+                            Add +  <i className='fa fa-truck'></i>
+                        </Button>{' '}
+                        <Button onClick={e => this.setState({     
+                            tableView:'d-flex',
+                            cardView:'d-none'
+                        })}>
+                            <i className='fa fa-list'></i>
+                        </Button> {' '}
+
+                        <Button
+                            onClick={e => this.setState({
+                                cardView:'row',
+                                tableView: 'd-none'
+                            })}>
+                            <i className='fa fa-th-large'></i>
+                        </Button>
                     </Container>
 
                     {
@@ -157,24 +174,41 @@ class Truck extends Component {
                                 position: "fixed",
                                 top: "50%",
                                 left: "50%",
-                                width: '3rem', height: '3rem'
+                                width: '3rem',
+                                height: '3rem'
                             }} />
                     }
-                    <Container className={this.state.view}>
+
+                    <Container className={this.state.cardView}>
                         {
                             this.state.cards
                                 .filter(({ truckRegNumber }) => truckRegNumber.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
                                 .map(data => <SingleTruckCard data={data} key={data.truckId} delete={this.delete} />)
                         }
+                    </Container>
+
+                    <Container className={this.state.tableView}>
+                        <Table>
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Registere Number</th>
+                                    <th>Manufacturer</th>
+                                    <th>Engine Type</th>
+                                    <th>  </th>
+                                </tr>
+                            </thead>
+
+                            {this.state.cards
+                                .filter(({ truckRegNumber }) => truckRegNumber.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
+                                .map(data => <TruckTableRow data={data} key={data.truckId} delete={this.delete} />)
+                            }
+                        </Table>
 
                     </Container>
                 </Container>
 
             </>
-
-
-
-
         );
     }
 
