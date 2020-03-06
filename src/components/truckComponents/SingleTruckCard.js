@@ -17,9 +17,6 @@ class SingleTruckCard extends Component {
         
     };
 
-    
-
-
     render() {
         const {
             truckId, truckRegNumber,
@@ -40,7 +37,9 @@ class SingleTruckCard extends Component {
                             Manufacturer: {manufacturer} <br />
                             Engine Type: {engineType}
                         </CardText>
-                        <Button color='danger' onClick={() =>this.handleClick(truckId)}> Remove </Button>
+                        <Button color='danger' onClick={() =>{
+                            return this.handleClick(truckId);
+                        }}> Remove </Button>
                     </CardBody>
                 </Card>
                 <br />

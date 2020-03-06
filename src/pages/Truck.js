@@ -2,14 +2,19 @@ import React, { Component } from "react";
 import SingleTruckCard from "../components/truckComponents/SingleTruckCard";
 import {
     Container,
-    InputGroup, InputGroupText, InputGroupAddon, Input, Spinner, Button, Modal, ModalHeader, ModalBody, ModalFooter
+    InputGroup,
+    InputGroupText,
+    InputGroupAddon,
+    Input,
+    Spinner,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter,
+    Label
 } from 'reactstrap';
 import axios from 'axios'
-
-
-// import TruckModal from "../components/truckComponents/TruckModal";
-
-
 
 class Truck extends Component {
 
@@ -18,7 +23,10 @@ class Truck extends Component {
         query: '',
         loading: true,
         view: 'row',
-        modalIsOpen: false
+        modalIsOpen: false,
+        regNumQuery: '',
+        manufacturerQuery: '',
+        enginTypeQuery: ''
     }
 
     componentDidMount() {
@@ -41,6 +49,33 @@ class Truck extends Component {
             })
     }
 
+    addTruck = () => {
+        axios({
+            "method": "POST",
+            "url": "http://localhost:8080/addTruck",
+            "params": {
+                "manufacturer": this.state.manufacturerQuery,
+                "truckRegNumber": this.state.regNumQuery,
+                "engineType": this.state.enginTypeQuery
+            }
+
+        })
+            .finally((response) => {
+                this.setState({
+                        loading: false,
+                        cards: [...this.state.cards, response.data]
+                    })
+                })
+                
+            .catch((error) => {
+                this.setState({
+                    loading: false,
+                });
+            })
+            this.toggleModal()
+            this.componentDidMount();
+    }
+
     delete = (id) => {
         this.setState(prevState => ({
             cards: prevState.cards.filter(el => el.truckId !== id)
@@ -50,6 +85,8 @@ class Truck extends Component {
 
     toggleModal = () => this.setState(({ modalIsOpen }) => ({ modalIsOpen: !modalIsOpen }))
 
+
+
     render() {
         return (
             <>
@@ -58,12 +95,36 @@ class Truck extends Component {
                         isOpen={this.state.modalIsOpen}
                         toggle={this.toggleModal}
                         className={''}>
-                        <ModalHeader toggle={this.toggleModal}>Modal title</ModalHeader>
+                        <ModalHeader toggle={this.toggleModal}>Add new truck</ModalHeader>
                         <ModalBody>
-                           Some text...
-                         </ModalBody>
+                            <Label>Regiser Number:</Label>
+                            <Input
+                                type="textarea"
+                                placeholder="Register Number..."
+                                onChange={e => this.setState({
+                                    regNumQuery: e.target.value
+                                })}
+                            />
+                            <Label>Manufacturer:</Label>
+                            <Input
+                                type="textarea"
+                                placeholder="Manufacturer..."
+                                onChange={e => this.setState({
+                                    manufacturerQuery: e.target.value
+                                })}
+                            />
+                            <Label>Engine type:</Label>
+                            <Input
+                                type="textarea"
+                                placeholder="Engine type..."
+                                onChange={e => this.setState({
+                                    enginTypeQuery: e.target.value
+                                })} />
+                        </ModalBody>
                         <ModalFooter>
-                            <Button color="primary" >Do Something</Button>{' '}
+                            <Button
+                                color="success"
+                                onClick={() => this.addTruck()}>Save</Button>{' '}
                         </ModalFooter>
                     </Modal>
                 </div>
@@ -81,6 +142,7 @@ class Truck extends Component {
                                     query: e.target.value
                                 })} />
                         </InputGroup>
+                        
                     </Container>
 
                     <Container className='mb-3'>
