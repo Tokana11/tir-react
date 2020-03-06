@@ -1,8 +1,8 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import SingleCountryCard from "../components/atlasComponents/SingleCountryCard";
-import { InputGroup, InputGroupText, InputGroupAddon, Input, Spinner, Button } from 'reactstrap';
+import {InputGroup, InputGroupText, InputGroupAddon, Input, Spinner, Button} from 'reactstrap';
 import axios from 'axios'
-import { Container } from "reactstrap";
+import {Container} from "reactstrap";
 
 class Atlas extends Component {
 
@@ -10,7 +10,7 @@ class Atlas extends Component {
         cards: [],
         query: '',
         loading: true,
-        view:'row'
+        view: 'row'
     }
 
     componentDidMount() {
@@ -54,41 +54,41 @@ class Atlas extends Component {
                             value={this.state.query}
                             onChange={e => this.setState({
                                 query: e.target.value
-                            })} />
-
+                            })}/>
                     </InputGroup>
                 </Container>
 
                 <Container>
-                    <Button onClick={e=>this.setState({
-                                view:'col' 
-                            })}>
+                    <Button onClick={e => this.setState({
+                        view: 'col'
+                    })}>
                         <i className='fa fa-list'></i>
                     </Button>
 
                     <Button
-                    onClick={e=>this.setState({
-                        view:'row' 
-                    })}>
+                        onClick={e => this.setState({
+                            view: 'row'
+                        })}>
                         <i className='fa fa-th-large'></i>
                     </Button>
 
                 </Container>
                 {
-                    this.state.loading && <Spinner 
-                    style={{ 
-                    position: "fixed", 
-                    top: "50%", 
-                    left: "50%",
-                    width: '3rem', height: '3rem' }} />
+                    this.state.loading && <Spinner
+                        style={{
+                            position: "fixed",
+                            top: "50%",
+                            left: "50%",
+                            width: '3rem', height: '3rem'
+                        }}/>
                 }
                 <Container className={this.state.view}>
                     {
                         this.state.cards
-                            .filter(({ country_name }) => country_name.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
-                            .map(data => <SingleCountryCard data={data} /> )
+                            .filter(({country_name}) => country_name.toLowerCase().search(this.state.query.toLocaleLowerCase()) !== -1)
+                            .map(data => <SingleCountryCard data={data}/>)
                     }
-                   
+
                 </Container>
             </Container>
 
@@ -96,4 +96,5 @@ class Atlas extends Component {
     }
 
 }
+
 export default Atlas;

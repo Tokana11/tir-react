@@ -22,8 +22,7 @@ class UserInfo extends Component {
     //         repPassword: ''
     //     });
     // }
-
-   
+ 
     handleChange=(event)=> {
         const value = event.target.value;   
         this.setState({

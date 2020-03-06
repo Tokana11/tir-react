@@ -13,6 +13,7 @@ import {
 } from "react-router-dom";
 
 import Atlas from './pages/Atlas';
+import Truck from './pages/Truck'
 
 
 
@@ -45,6 +46,13 @@ const routes = [
     exact: true,
     main: () => <Layout>
       <Atlas/>
+    </Layout>
+  },
+  {
+    path: '/trucks',
+    exact: true,
+    main: () => <Layout>
+      <Truck/>
     </Layout>
   },
 

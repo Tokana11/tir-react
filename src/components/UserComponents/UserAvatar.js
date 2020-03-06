@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import { Card, CardImg, CardBody, CardTitle,Input } from 'reactstrap';
-import logo from '../../assets/images/trucking-logo.jpg'
+import logo from '../../assets/images/toon-truck.png'
 
 class UserAvatar extends Component{
 
